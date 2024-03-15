@@ -8,34 +8,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-class SelfAtt_a_b(nn.Module):
-    def __init__(self, head=8):
-        super(SelfAtt_a_b , self).__init__()
-        self.head = head
-        self.FC_q = nn.Linear(128, 128)
-        self.FC_k = nn.Linear(128, 128)
-        self.FC_v = nn.Linear(128, 128)
-        self.drop = nn.Dropout(0.5)
-        self.FC = nn.Linear(1024, 1024)
-
-    def forward(self, x):     # 第三个维度应该要被头数整除
-        batch_size, length = x.size()  
-    
-        x = x.view(batch_size, self.head, length // self.head)   
-        # x = torch.transpose(x,1,2)  
-        q = self.FC_q(x)
-        k = self.FC_k(x)
-        v = self.FC_v(x)
-        k = torch.transpose(k, -1, -2)  
-        p_attn = nn.functional.softmax(torch.matmul(q, k) / math.sqrt( length // self.head ),dim=1)  
-    
-        p_attn = self.drop(p_attn)   
-        att_out = torch.matmul(p_attn, v)  
-        att_out = att_out.view(batch_size, length)  
-        att_out = self.FC(att_out)
-    
-        return att_out
-
 class SelfAtt(nn.Module):
     def __init__(self, head=8):
         super(SelfAtt , self).__init__()
@@ -89,8 +61,6 @@ class PseKNC_Seq_Classifier(nn.Module):
         super(PseKNC_Seq_Classifier, self).__init__()
         self.drop = nn.Dropout(0.4)
         self.pool = nn.MaxPool1d(2)
-        self.BiLSTM_PseKNC = nn.LSTM(input_size=66, hidden_size=512, dropout=0.5,
-                                 num_layers=3, batch_first=True, bidirectional=True)
         self.FC1 = nn.Linear(1024, 896)
         self.BiGRU = nn.GRU(input_size=66, hidden_size=512, dropout=0.5,
                                  num_layers=2, batch_first=True, bidirectional=True)
@@ -130,10 +100,9 @@ class PseKNC_Seq_Classifier(nn.Module):
     def forward(self, seq, Pse):
         ############### 以下是PseKNC部分 ###############
     
-        Pse, _ = self.BiLSTM_PseKNC (Pse) 
+        Pse, _ = self.CNNmodel (Pse) 
         Pse = self.self_att_Pse(Pse)     
         Pse = self.drop(Pse)
-        # y = self.classifier_for_RNN(Pse)
     
         ############### 以上是PseKNC部分 ###############
     
