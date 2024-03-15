@@ -100,7 +100,7 @@ class PseKNC_Seq_Classifier(nn.Module):
     def forward(self, seq, Pse):
         ############### 以下是PseKNC部分 ###############
     
-        Pse, _ = self.CNNmodel (Pse) 
+        Pse = self.CNNmodel (Pse) 
         Pse = self.self_att_Pse(Pse)     
         Pse = self.drop(Pse)
     
