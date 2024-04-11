@@ -79,7 +79,7 @@ class PseKNC_Seq_Classifier(nn.Module):
             nn.Linear(9, 256) 
         )
     
-        ############### 以下是NCP部分 ###############
+        ###############  ###############
         self.embed = nn.Embedding(3000, 512)
         self.poistion_embed = PositionalEncoding(d_model=512, dropout=0.5)
         self.shapeChange = nn.Linear(201, 512)
@@ -87,7 +87,7 @@ class PseKNC_Seq_Classifier(nn.Module):
                               num_layers=2, batch_first=True, bidirectional=True)
         self.self_att = SelfAtt(head=8)
         self.FC2 = nn.Linear(1024, 128)
-        ############### 以上是NCP部分 ###############
+        ###############  ###############
     
         self.classifier = nn.Sequential(
             nn.Linear(2048, 1024),
@@ -106,7 +106,7 @@ class PseKNC_Seq_Classifier(nn.Module):
     
         ############### 以上是PseKNC部分 ###############
     
-        ############### 以下是NCP部分 ###############
+        ###############  ###############
     
         onehot = seq.long()
         onehot_emb = self.embed(onehot) 
@@ -123,7 +123,7 @@ class PseKNC_Seq_Classifier(nn.Module):
         one_out = torch.nn.functional.max_pool1d(att_out, att_out.size(2)).squeeze(2)  
 
 
-        ############### 以上是NCP部分 ###############
+        ############### ###############
     
         x = torch.cat([Pse, one_out], dim=1)
         y = self.classifier(self.drop(x))
