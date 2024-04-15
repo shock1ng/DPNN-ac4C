@@ -32,7 +32,7 @@ parser.add_argument('--val_batch_size', type=int, default=50, metavar='N')   # �
 parser.add_argument('--log_interval', type=int, default=10, metavar='N')
 parser.add_argument('--dropout', type=float, default=0.6)
 parser.add_argument('--epochs', type=int, default=30)
-parser.add_argument('--lr', type=float, default=1e-3)     # 不太记得最好是多少了。。。。。
+parser.add_argument('--lr', type=float, default=1e-3)     
 parser.add_argument('--fold',type=int, default=10, help='定义几折交叉验证')
 parser.add_argument('--optim', type=str, default='Adam')
 parser.add_argument('--seed', type=int, default=800)
@@ -205,7 +205,7 @@ def Val():
         ##### 开始记录auc信息 #####
         tg_true = []
         tg_pred = []
-        if auc > 0.82 and auc < 0.93:
+        if auc > 0.82:
             print("保存AUC的list咯！")
             for idx in range(len(label_true)):
                 tg_true.append(label_true[idx][0])
@@ -225,13 +225,13 @@ def Val():
 
     return accuracy_f1, accuracy_recall, label_pre, label_true, CM_test, mcc, auc , sen, spe
 
-data_save = "iRNA_ac4c_2_ncp_anf_LSTM_attack_dropMore05_val.txt"
+data_save = "iRNA_ac4c_attack_dropMore05_val.txt"
 
 ## 加载部分保存好的数据，并且生成标签
-pd2mer = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/list2mer_4410_df.csv')
+pd2mer = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/list2mer_4412_df.csv')
 # label
-label_pos = np.ones((2205, 1))
-label_neg = np.zeros((2205, 1))
+label_pos = np.ones((2206, 1))
+label_neg = np.zeros((2206, 1))
 label = np.append(label_pos, label_neg)
 label = pd.DataFrame(label)
 
