@@ -28,7 +28,7 @@ def kmer_composition(sequence, k):
     return composition ,seqEmbed
 
 # 打开文件
-with open(r'/home/hd/JohnnyYuan/bio/RNA/Dataset/iRNA-ac4c/trainset/iRNA-ac4c-trainset-4410.txt', 'r') as file:
+with open(r'/home/hd/JohnnyYuan/bio/RNA/Dataset/iRNA-ac4c/trainset/iRNA-ac4c-trainset-4412.txt', 'r') as file:
     # 逐行读取文件内容并存储到列表
     lines = file.readlines()      # 生成列表，每个元素就是每一行的文本，但是最后都有换行符
 
@@ -60,8 +60,8 @@ list3mer_df = pd.DataFrame(list3mer)   # [4412 rows x 199 columns]
 list4mer_df = pd.DataFrame(list4mer)   # [4412 rows x 198 columns]
 list5mer_df = pd.DataFrame(list5mer)   # [4412 rows x 197 columns]
 # 保存df方便调用
-list2mer_df.to_csv('list2mer_4410_df.csv',index=False)
-list3mer_df.to_csv('list3mer_4410_df.csv',index=False)
-list4mer_df.to_csv('list4mer_4410_df.csv',index=False)
-list5mer_df.to_csv('list5mer_4410_df.csv',index=False)
+list2mer_df.to_csv('list2mer_4412_df.csv',index=False)
+list3mer_df.to_csv('list3mer_4412_df.csv',index=False)
+list4mer_df.to_csv('list4mer_4412_df.csv',index=False)
+list5mer_df.to_csv('list5mer_4412_df.csv',index=False)
 
