@@ -28,13 +28,10 @@ for index, line in enumerate(lines):
     if index > 1:   # 由于文本有前面几行的注释，这里选择 1 就是跳过前面两行，根据实际情况跳过不同行数
         if index % 2 != 0:   #  拿取奇数行的数据，因为偶数行是id
             line = line.strip()   # 拿走每一行最后的换行符'\n'
-            if len(line) != 201:
-                print('有Nan元素！位置在：',index)
-                sys.exit(0)
 
             output = NCP(line)    # <class 'list'>
             NCP_Embedding.append(output)
 
-NCP_Embedding_lie_df = pd.DataFrame(NCP_Embedding)  # train+val:[4412 rows x 603 columns]     test:[1104 rows x 603 columns]
+NCP_Embedding_lie_df = pd.DataFrame(NCP_Embedding)  # train+val:[4412 rows x 603 columns]
 print(NCP_Embedding_lie_df)
 NCP_Embedding_lie_df.to_csv('NCP_Embedding_test_df.csv',index=False)
