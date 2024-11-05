@@ -8,14 +8,13 @@ import pandas as pd
 import numpy as np
 
 ## 加载保存好的数据，并且生成标签
-#  因为阳性有一个脏数据，所以阴性也剪去了一个数据，2205-2205条阴性阳性数据
 # try_df = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/onehot_Embedding_train_lie_df.csv')   # onehot
-Pse_df = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/PseKNC_4410_66forNN.csv')             # PseKNC
-seq_df = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/seq_Embedding_train_4410_0123_df.csv')  # 0123
+Pse_df = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/PseKNC_4412_66forNN.csv')             # PseKNC
+seq_df = pd.read_csv('../RNA/Dataset/iRNA-ac4c/trainset/seq_Embedding_train_4412_0123_df.csv')  # 0123
 
 # label
-label_pos = np.ones((2205, 1))
-label_neg = np.zeros((2205, 1))
+label_pos = np.ones((2206, 1))
+label_neg = np.zeros((2206, 1))
 label = np.append(label_pos, label_neg)
 label = pd.DataFrame(label)
 
