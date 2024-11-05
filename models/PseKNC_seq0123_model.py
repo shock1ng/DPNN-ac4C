@@ -62,7 +62,7 @@ class PseKNC_Seq_Classifier(nn.Module):
         self.drop = nn.Dropout(0.4)
         self.pool = nn.MaxPool1d(2)
         self.FC1 = nn.Linear(1024, 896)
-        self.BiGRU = nn.GRU(input_size=66, hidden_size=512, dropout=0.5,
+        self.BiGRU = nn.GRU(input_size=512, hidden_size=512, dropout=0.5,
                                  num_layers=2, batch_first=True, bidirectional=True)
         self.self_att_Pse = SelfAtt_a_b(head = 8)    # 定义为8头
 
@@ -83,8 +83,6 @@ class PseKNC_Seq_Classifier(nn.Module):
         self.embed = nn.Embedding(3000, 512)
         self.poistion_embed = PositionalEncoding(d_model=512, dropout=0.5)
         self.shapeChange = nn.Linear(201, 512)
-        self.BiLSTM = nn.LSTM(input_size=512, hidden_size=512, dropout=0.5,
-                              num_layers=2, batch_first=True, bidirectional=True)
         self.self_att = SelfAtt(head=8)
         self.FC2 = nn.Linear(1024, 128)
         ###############  ###############
@@ -112,13 +110,13 @@ class PseKNC_Seq_Classifier(nn.Module):
         onehot_emb = self.embed(onehot) 
         onehot_emb = self.poistion_embed(onehot_emb)
         onehot_emb = self.drop(onehot_emb)
-        lstm_out, _ = self.BiLSTM(onehot_emb) 
+        lstm_out, _ = self.BiGRU(onehot_emb) 
         # 变化都是为了更好地进入自注意力机制
         lstm_out = torch.transpose(lstm_out, 1, 2) 
         lstm_out = self.shapeChange(lstm_out) 
         lstm_out = torch.transpose(lstm_out, 1, 2)
         att_out = self.self_att(lstm_out)  
-        # att_out = self.self_conv_att(lstm_out)       # 尝试卷积自注意力，带残差连接，开始训练就过拟合了，所以放弃
+        # att_out = self.self_conv_att(lstm_out)
         att_out = torch.transpose(att_out, 1, 2)  
         one_out = torch.nn.functional.max_pool1d(att_out, att_out.size(2)).squeeze(2)  
 
